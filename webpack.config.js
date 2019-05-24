@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 
@@ -32,6 +33,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Excel',
     }),
+    new CopyWebpackPlugin([{
+      from: './src/assets',
+      to: './assets',
+    }]),
   ],
   module: {
     rules: [
@@ -47,9 +52,21 @@ module.exports = {
           'css-loader', // translates CSS into CommonJS
           'sass-loader' // compiles Sass to CSS, using Node Sass by default
         ]
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              publicPath: './src/assets',
+            },
+          },
+        ],
       }
     ]
   },
+  devtool: 'source-map',
   devServer: {
     contentBase: './dist',
     port: 8080

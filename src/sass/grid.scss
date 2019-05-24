@@ -1,11 +1,29 @@
+@function generator($coll-width) {
+  $coll-template: $coll-width;
+  @for $_ from 1 through 26-1 {
+    $coll-template: #{$coll-template} #{$coll-width};
+  }
+  @return $coll-template;
+}
+
+$default-col-width: 100px;
+
 .grid {
   --cell-width: 100px;
   --cell-height: 35px;
   --th-height: 30px;
   --number-width: 30px;
   --font-size: 12px;
+  --error: #e74c3c;
+  --columns: 26;
+  --rows: 30;
+
+  $coll-template: "100px 100px";
+  --coll-template: #{generator($default-col-width)};
+
 
   $border-style: 1px solid #ccc;
+  $primary: #3498db;
 
   display: grid;
   flex-grow: 1;
@@ -13,10 +31,16 @@
   max-width: 100%;
   max-height: 100%;
   grid-template-areas:
-    "corner letters"
+    "corner columns"
     "numbers cells";
   grid-template-columns: var(--number-width) auto;
   grid-template-rows: auto;
+  align-content: start;
+  position: relative;
+
+  &.no-select {
+    user-select: none;
+  }
 
   .tl-corner {
     grid-area: corner;
@@ -31,14 +55,14 @@
     left: 0;
   }
 
-  .letters,
+  .columns,
   .numbers {
     font-size: var(--font-size);
   }
 
   .tl-corner,
-  .letters,
-  .letter,
+  .columns,
+  .coll,
   .numbers,
   .number,
   .cell {
@@ -46,15 +70,16 @@
   }
 
   .tl-corner,
-  .letters,
+  .columns,
   .numbers {
     background-color: #f8f8f8;
     color: #444;
   }
 
-  .letters {
-    grid-area: letters;
-    display: flex;
+  .columns {
+    grid-area: columns;
+    display: grid;
+    grid-template-columns: var(--coll-template);
     height: var(--th-height);
     border-bottom: $border-style;
     white-space: nowrap;
@@ -63,18 +88,38 @@
     top: 0;
   }
 
-  .letter,
+  .coll,
   .number {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgba(0, 0, 0, 0);
+
+    &.hovered {
+      background-color: rgba(0, 0, 0, 0.07);
+    }
   }
 
-  .letter {
-    width: var(--cell-width);
+  .coll {
+    width: 100%;
     height: 100%;
     border-right: $border-style;
+  }
+
+  .coll-content {
+    flex-grow: 1;
     text-align: center;
+  }
+
+  .coll-resize-marker {
+    height: 100%;
+    width: 4px;
+    background-color: transparent;
+    cursor: e-resize;
+
+    &:hover {
+      background-color: $primary;
+    }
   }
 
   .numbers {
@@ -93,22 +138,59 @@
   }
 
   .cells {
-    --columns: 26;
-    --rows: 30;
-
     grid-area: cells;
     display: grid;
     max-width: 100%;
     max-height: 100%;
-    grid-template-columns: repeat(var(--columns), var(--cell-width));
+    grid-template-columns: var(--coll-template);
     grid-template-rows: repeat(var(--rows), var(--cell-height));
+  }
 
-    .cell {
-      width: var(--cell-width);
-      height: var(--cell-height);
-      border-bottom: $border-style;
-      border-right: $border-style;
+  .cell {
+    width: 100%;
+    height: var(--cell-height);
+    border-bottom: $border-style;
+    border-right: $border-style;
+    box-sizing: border-box;
+    transition-duration: .1s;
+    transition-timing-function: linear;
+    transition-property: box-shadow, background-color;
+    white-space: pre;
+    padding: 5px;
+    line-height: 1.5;
+    outline: none;
+    overflow: auto;
+
+    &.focused {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: block;
+        border: 2px solid $primary;
+        pointer-events: none;
+      }
     }
+
+    &.error {
+      box-shadow: 0 0 0 1px var(--error);
+      border: 1px solid var(--error);
+    }
+  }
+
+  .vertical-resize-marker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: $primary;
+    z-index: 2;
   }
 
 }
