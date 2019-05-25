@@ -14,35 +14,13 @@ const xAxis: HTMLElement = (
   </section>
 );
 
-function getYAxis(rows: number): HTMLElement {
-  return <section className="numbers">
-    {Array.from({length: rows}, (v: any, i: number) => <span class="number" data-y={i + 1}>{i + 1}</span>)}
-  </section>
-}
-
-function createCell(x: string, y: number): HTMLElement {
-  return <span className="cell" data-x={x} data-y={y} />;
-}
-
-function generateCells(rows: number): HTMLElement {
-  const cells = [];
-  for (let y=0; y<rows; y++) {
-    for (let i=0; i<ALPHABET.length; i++) {
-      cells.push(createCell(ALPHABET[i], y+1));
-    }
-  }
-  return <div className="cells">{...cells}</div>
-}
-
-function getViewportRows(container: HTMLElement): number {
-  return  Math.floor(container.offsetHeight / 36);
-}
-
 function createGrid(): HTMLElement {
   return (
     <div className="grid">
       <span className="tl-corner" />
       {xAxis}
+      <section className="numbers" />
+      <div className="cells" />
     </div>
   );
 }
@@ -72,10 +50,6 @@ export function bootstrapApp(): IBootstrapApp {
     </main>
   );
   document.body.appendChild(app);
-  const rows = getViewportRows(grid);
-  grid.style.setProperty('--rows', rows.toString());
-  grid.appendChild(getYAxis(rows));
-  grid.appendChild(generateCells(rows));
   return { header, grid: new Grid(grid) };
 }
 

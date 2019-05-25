@@ -10,9 +10,11 @@ import {
   columnResizeBehavior,
 } from './behaviors';
 import { sum, minus, max, now } from './functions';
+import { gridResizeBehavior } from './behaviors/grid-resize.behavior';
 
 const app = bootstrapApp();
 // initiate plugins
+gridResizeBehavior(app);
 cellFocusBehavior(app);
 cellHoverBehavior(app);
 cellDbClickBehavior(app);

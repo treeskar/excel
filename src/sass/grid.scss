@@ -16,7 +16,6 @@ $default-col-width: 100px;
   --font-size: 12px;
   --error: #e74c3c;
   --columns: 26;
-  --rows: 30;
 
   $coll-template: "100px 100px";
   --coll-template: #{generator($default-col-width)};
@@ -143,7 +142,6 @@ $default-col-width: 100px;
     max-width: 100%;
     max-height: 100%;
     grid-template-columns: var(--coll-template);
-    grid-template-rows: repeat(var(--rows), var(--cell-height));
   }
 
   .cell {

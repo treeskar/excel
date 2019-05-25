@@ -43,4 +43,7 @@ export class Grid {
     return this.getCell(x, y);
   }
 
+  // TODO: add/remove behavior
+  // TODO: add destroy method
+
 }
