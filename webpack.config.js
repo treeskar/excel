@@ -2,8 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-
 
 module.exports = {
   entry: './src/index.tsx',
@@ -16,22 +14,10 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   plugins: [
-    // new FaviconsWebpackPlugin({
-    //   logo: path.resolve(__dirname, 'src/assets/favicon.svg'),
-    //   persistentCache: true,
-    //   inject: true,
-    //   icons: {
-    //     favicons: true,
-    //     firefox: false,
-    //     opengraph: false,
-    //     twitter: false,
-    //     yandex: false,
-    //     windows: false
-    //   }
-    // }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'Excel',
+      favicon: './src/assets/favicon.ico',
     }),
     new CopyWebpackPlugin([{
       from: './src/assets',
