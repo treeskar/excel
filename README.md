@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/treeskar/excel.svg?branch=master)](https://travis-ci.org/treeskar/excel)
+
 # Excel
 
 Simple excel implementation based on RxJS.
