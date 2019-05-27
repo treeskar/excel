@@ -1,10 +1,7 @@
 import { BehaviorSubject, of, Subscription } from 'rxjs';
 import { filter, map, pairwise, switchMap } from 'rxjs/operators';
 import { Grid, CELL_ID_PATTERN } from './grid';
-
-function getCellElement(x: string, y: string): HTMLElement | null {
-  return document.body.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`);
-}
+import { CellElement } from './cellElement';
 
 interface IOutput {
   error?: boolean,
@@ -24,9 +21,11 @@ export class Cell {
   subscription: Subscription = new Subscription();
   dependencies: Cell[] = [];
   isEditable: boolean = false;
+  element: CellElement;
 
   constructor(protected grid: Grid, public x: string, public y: string) {
     this.id = `${x}${y}`;
+    this.element = this.grid.render.getCellElement(this.x, this.y);
 
     const inputSubscription = this.input$.pipe(
       map(value => this.parseInput(value)),
@@ -47,23 +46,12 @@ export class Cell {
     this.subscription.add(outputSubscription);
   }
 
-  get element(): HTMLElement | null {
-    return getCellElement(this.x, this.y);
-  }
-
   set editable(state: boolean) {
     this.isEditable = state;
-    const element = this.element;
-    if (!(element instanceof  HTMLElement)) {
-      return;
-    }
-    if (state && !element.isContentEditable) {
-      element.contentEditable = 'true';
-      element.innerText = this.input$.value;
-      element.focus();
-    } else if (!state && element.isContentEditable) {
-      element.contentEditable = 'false';
-      element.innerText = this.output$.value.result;
+    if (state) {
+      this.element.setEditable(true).setText(this.input$.value).focus();
+    } else if (!state) {
+      this.element.setEditable(false).setText(this.output$.value.result).focus();
     }
   }
 
@@ -103,19 +91,14 @@ export class Cell {
   }
 
   outputRender(previousValue: IOutput, currentValue: IOutput) {
-    const element = this.element;
-    if (!element) {
-      return;
-    }
     if (currentValue.error) {
-      element.classList.add('error');
-      element.innerText = currentValue.result;
+      this.element.setError(currentValue.result);
       return;
     }
     if (previousValue.error) {
-      element.classList.remove('error');
+      this.element.removeClass('error');
     }
-    element.innerText = currentValue.result;
+    this.element.setText(currentValue.result);
   }
 
   errorRender(error: Error) {

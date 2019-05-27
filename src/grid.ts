@@ -1,26 +1,30 @@
 import { Cell } from './cell';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { pairwise } from 'rxjs/operators';
 import { Parser } from './parser';
+import { Render } from './render';
 
 export const CELL_ID_PATTERN = /^([A-Z])([1-9][0-9]*)$/;
 
 export class Grid {
 
-  private CELLS = new Map();
+  private CELLS: Map<string, Cell> = new Map();
   public focused$: BehaviorSubject<Cell | null> = new BehaviorSubject(null);
   public parser: Parser;
+  public render: Render;
 
   constructor(public element: HTMLElement) {
     this.parser = new Parser(this);
+    this.render = new Render(this);
+
     this.focused$.pipe(
       pairwise(),
     ).subscribe(([currentCell, newCell]) => {
-      if (currentCell instanceof Cell && currentCell.element instanceof HTMLElement) {
-        currentCell.element.classList.remove('focused');
+      if (currentCell instanceof Cell) {
+        currentCell.element.removeClass('focused');
       }
-      if (newCell instanceof Cell && newCell.element instanceof HTMLElement) {
-        newCell.element.classList.add('focused');
+      if (newCell instanceof Cell) {
+        newCell.element.addClass('focused');
       }
     });
     this.focused$.next(this.getCell('A', '1'));
@@ -42,8 +46,5 @@ export class Grid {
     const { x, y } = element.dataset;
     return this.getCell(x, y);
   }
-
-  // TODO: add/remove behavior
-  // TODO: add destroy method
 
 }

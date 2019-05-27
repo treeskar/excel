@@ -13,7 +13,7 @@ export function cellHoverBehavior(app: IBootstrapApp): Subscription {
           return null;
         }
         const { x, y } = cell.dataset;
-        const xElm = app.grid.element.querySelector(`.letter[data-x="${x}"]`);
+        const xElm = app.grid.element.querySelector(`.coll[data-x="${x}"]`);
         const yElm = app.grid.element.querySelector(`.number[data-y="${y}"]`);
         return { xElm, yElm };
       }),

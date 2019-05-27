@@ -13,7 +13,7 @@ export function cellDbClickBehavior(app: IBootstrapApp): Subscription {
   const subscription = editableCell$.pipe(
     startWith(null),
     pairwise(),
-  ).subscribe(([previousCell, currentCell]) => {
+  ).subscribe(([previousCell, currentCell]: [Cell, Cell]) => {
     if (previousCell instanceof Cell) {
       previousCell.editable = false;
     }
@@ -25,7 +25,7 @@ export function cellDbClickBehavior(app: IBootstrapApp): Subscription {
   // TODO: move editable$ stream to Grid class
   const clickSubscription = fromEvent(document.body, 'click').pipe(
     withLatestFrom(editableCell$),
-    filter(([event, cell]) => cell && !(event.composedPath().includes(cell.element))),
+    filter(([event, cell]) => cell && !(event.composedPath().includes(cell.element.nativeElement))),
   ).subscribe(([event, cell]) => {
     cell.editable = false;
   });
@@ -33,4 +33,3 @@ export function cellDbClickBehavior(app: IBootstrapApp): Subscription {
   subscription.add(clickSubscription);
   return subscription;
 }
-
