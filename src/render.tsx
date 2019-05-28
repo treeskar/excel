@@ -5,6 +5,7 @@ import { ALPHABET } from './bootstrap';
 
 const CELL_HEIGHT = 36;
 
+// TODO: support overflow content in cell. Extend cell size in edit mode.
 function createCell(x: string, y: number): HTMLElement {
   return <span className="cell" data-x={x} data-y={y} />;
 }
