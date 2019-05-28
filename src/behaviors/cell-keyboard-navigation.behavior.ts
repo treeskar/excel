@@ -25,13 +25,14 @@ const knownCodes = new Set([
 ]);
 
 export function cellKeyboardNavigationBehavior(app: IBootstrapApp): Subscription {
-  return delegateFromEvent(document.body, '.cell', 'keyup')
+  return delegateFromEvent(app.grid.element, '.cell', 'keydown')
     .pipe(
       map((obj: EventDelegationType ) => obj.event),
       withLatestFrom(app.grid.focused$),
       filter(([event, cell]: [KeyboardEvent, Cell]) => (knownCodes.has(event.which) && cell instanceof Cell)),
     )
     .subscribe(([event, cell]) => {
+      event.stopPropagation();
       let focusedCell: Cell;
       let xIndex: number;
       let yIndex: number;
@@ -69,8 +70,15 @@ export function cellKeyboardNavigationBehavior(app: IBootstrapApp): Subscription
           app.grid.focused$.next(focusedCell);
           break;
         case KEY_CODES.Enter:
-          cell.editable = !cell.isEditable;
           event.preventDefault();
+          if (event.metaKey) {
+            app.header.input.focus();
+          } else {
+            cell.editable = !cell.isEditable;
+            if (!cell.isEditable) {
+              app.grid.element.focus();
+            }
+          }
           break;
         case KEY_CODES.Backspace:
           // if (!cell.isEditable) {

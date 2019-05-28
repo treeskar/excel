@@ -25,6 +25,7 @@ $default-col-width: 100px;
   $primary: #3498db;
 
   display: grid;
+  outline: none;
   flex-grow: 1;
   overflow: auto;
   max-width: 100%;

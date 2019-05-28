@@ -16,7 +16,7 @@ const xAxis: HTMLElement = (
 
 function createGrid(): HTMLElement {
   return (
-    <div className="grid">
+    <div className="grid" tabindex="0">
       <span className="tl-corner" />
       {xAxis}
       <section className="numbers" />
@@ -35,7 +35,10 @@ function createHeader(): HTMLElement {
 }
 
 export interface IBootstrapApp {
-  header: HTMLElement;
+  header: {
+    element: HTMLElement,
+    input: HTMLInputElement,
+  };
   grid: Grid;
 }
 
@@ -50,6 +53,9 @@ export function bootstrapApp(): IBootstrapApp {
     </main>
   );
   document.body.appendChild(app);
-  return { header, grid: new Grid(grid) };
+  return {
+    header: { element: header, input: header.querySelector('.fx-input') },
+    grid: new Grid(grid),
+  };
 }
 

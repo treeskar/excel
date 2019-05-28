@@ -5,12 +5,12 @@ import { Cell } from '../cell';
 
 export function headerInputBehavior(app: IBootstrapApp): Subscription {
   const subscription = new Subscription();
-  const inputElement: HTMLInputElement = app.header.querySelector('input.fx-input');
+  const inputElement: HTMLInputElement = app.header.input;
   const focusedSubscription = app.grid.focused$.pipe(
     filter(cell => cell instanceof Cell),
     switchMap(cell => cell.input$),
     filter(input => inputElement.value !== input),
-  ).subscribe((input) => {
+  ).subscribe((input: string) => {
     inputElement.value = input;
   });
   subscription.add(focusedSubscription);
