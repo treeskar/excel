@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/treeskar/excel/compare/v1.1.1...v1.1.2) (2019-05-28)
+
+
+### Bug Fixes
+
+* **ci:** update package version on release ([a8381b5](https://github.com/treeskar/excel/commit/a8381b5))
+
 ## [1.1.1](https://github.com/treeskar/excel/compare/v1.1.0...v1.1.1) (2019-05-28)
 
 
