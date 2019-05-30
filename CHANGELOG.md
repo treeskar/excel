@@ -1,3 +1,11 @@
+## [1.1.3](https://github.com/treeskar/excel/compare/v1.1.2...v1.1.3) (2019-05-30)
+
+
+### Bug Fixes
+
+* behaviors improvment ([46ecbb5](https://github.com/treeskar/excel/commit/46ecbb5))
+* **render:** extend render capabilities ([70725ee](https://github.com/treeskar/excel/commit/70725ee))
+
 ## [1.1.2](https://github.com/treeskar/excel/compare/v1.1.1...v1.1.2) (2019-05-28)
 
 
