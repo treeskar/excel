@@ -32,11 +32,21 @@ export class Grid {
 
   public getCell(x: string, y: string): Cell {
     // TODO: add x/y validation
-    const cellsId = `${x}${y}`;
-    if (!this.CELLS.has(cellsId)) {
-      this.CELLS.set(cellsId, new Cell(this, x, y));
+    const cellId = `${x}${y}`;
+    if (!this.CELLS.has(cellId)) {
+      this.CELLS.set(cellId, new Cell(this, x, y));
     }
-    return this.CELLS.get(cellsId);
+    return this.CELLS.get(cellId);
+  }
+
+  public getCellInput(x: string, y: string | number): string {
+    const cellId = `${x}${y}`;
+    return this.CELLS.has(cellId) ? this.CELLS.get(cellId).input$.value : '';
+  }
+
+  public getCellOutput(x: string, y: string | number): string {
+    const cellId = `${x}${y}`;
+    return this.CELLS.has(cellId) ? this.CELLS.get(cellId).output$.value.result : '';
   }
 
   public getCellByElement(element: HTMLElement | null): Cell | null {

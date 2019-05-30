@@ -1,6 +1,16 @@
 import { fromEvent, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+export enum KEY_CODES {
+  ArrowDown = 40,
+  ArrowRight = 39,
+  ArrowUp = 38,
+  ArrowLeft = 37,
+  Escape = 27,
+  Enter = 13,
+  Backspace = 8,
+}
+
 export type EventDelegationType = {
   event: Event
   element: Element

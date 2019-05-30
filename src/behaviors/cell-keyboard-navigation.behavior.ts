@@ -1,18 +1,8 @@
-import { delegateFromEvent, EventDelegationType } from '../tools';
+import { delegateFromEvent, EventDelegationType, KEY_CODES } from '../tools';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { fromEvent, Subscription } from 'rxjs';
 import { IBootstrapApp, ALPHABET } from '../bootstrap';
 import { Cell } from '../cell';
-
-enum KEY_CODES {
-  ArrowDown = 40,
-  ArrowRight = 39,
-  ArrowUp = 38,
-  ArrowLeft = 37,
-  Escape = 27,
-  Enter = 13,
-  Backspace = 8,
-}
 
 const knownCodes = new Set([
   KEY_CODES.ArrowUp,
